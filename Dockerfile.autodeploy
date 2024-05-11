@@ -1,0 +1,57 @@
+# Use the latest Python image based on Debian Buster as the base
+FROM python:3.9-buster
+
+# Arguments to define UID, GID, and Docker group GID
+ARG UID=1000
+ARG GID=1000
+ARG DOCKER_GID=999
+
+# Install necessary packages, including Docker and Supervisor
+RUN apt-get update -y && apt-get install -y \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release \
+    sudo \
+    supervisor \
+    && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
+    && echo "deb [arch=amd64] https://download.docker.com/linux/debian buster stable" > /etc/apt/sources.list.d/docker.list \
+    && apt-get update -y \
+    && apt-get install -y docker-ce docker-ce-cli containerd.io \
+    && pip install pytz schedule
+
+# Cleanup to reduce image size
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Create a group 'docker' if it doesn't exist and a user 'appuser' with the specified UID/GID
+RUN if getent group docker; then echo "Group 'docker' already exists"; else groupadd -g ${DOCKER_GID} docker; fi && \
+    groupadd -g ${GID} appgroup && \
+    useradd -m -u ${UID} -g appgroup -G docker appuser
+
+# Set the working directory in the container
+WORKDIR /app
+
+
+# Change ownership of the working directory and other necessary directories to the non-root user
+RUN mkdir -p /var/run/supervisor && chown -R appuser:appgroup /var/run/supervisor
+RUN mkdir -p /var/log/supervisor && chown -R appuser:appgroup /var/log/supervisor
+
+# Copy the application's files into the container and change ownership
+COPY --chown=appuser:appgroup config.yaml /app/
+COPY --chown=appuser:appgroup deployment_script.py /app/
+
+# Copy supervisord configuration file into the container
+COPY --chown=appuser:appgroup supervisord.conf /etc/supervisor/conf.d/
+
+# Switch to the non-root user
+USER appuser
+
+# Install Python dependencies
+RUN pip install --no-cache-dir schedule PyYAML
+
+# Expose any necessary ports
+EXPOSE 80
+
+# Run supervisord
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+

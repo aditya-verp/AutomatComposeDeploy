@@ -6,6 +6,7 @@ import schedule
 import time
 from datetime import datetime
 import pytz
+import tempfile
 
 # Define the script directory
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -20,6 +21,36 @@ def read_config():
                 return config
     raise FileNotFoundError("🚫 No config file found with .yaml or .yml extension.")
 
+def set_git_safe_directories(config):
+    """Sets Git safe directories for each repository path from the configuration."""
+    git_repo_paths = config['gitrepo_path']
+    for repo_config in git_repo_paths.values():
+        git_path = os.path.abspath(os.path.join(SCRIPT_DIR, repo_config['path']))
+        try:
+            subprocess.run(['git', 'config', '--global', '--add', 'safe.directory', git_path], check=True)
+            print(f"✔️ Added {git_path} to safe directories.")
+        except subprocess.CalledProcessError as e:
+            print(f"🚫 Failed to set safe directory for {git_path}: {e}")
+
+def detect_git_changes(git_path, compose_path):
+    """Detects if there are changes in the Git repository affecting the docker-compose file."""
+    try:
+        with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+            temp_compose_path = tmp_file.name
+        subprocess.run(['cp', compose_path, temp_compose_path], check=True)
+        subprocess.run(['git', 'pull'], cwd=git_path, capture_output=True, text=True)
+        cmp_result = subprocess.run(['cmp', compose_path, temp_compose_path], stdout=subprocess.PIPE)
+        os.remove(temp_compose_path)
+        if cmp_result.returncode != 0:
+            print("🔄 Changes detected.")
+            return True
+        else:
+            print("✅ No changes detected in the Docker Compose file at {}".format(git_path))
+            return False
+    except Exception as e:
+        print("🚫 Error during Git operations:", e)
+        return False
+
 def get_repo_url(git_path):
     """Gets the Git repository URL without logging sensitive information."""
     if not os.path.exists(git_path) or not os.path.isdir(os.path.join(git_path, '.git')):
@@ -32,23 +63,14 @@ def get_repo_url(git_path):
         print(f"🚫 Error retrieving Git URL for directory {git_path}.")
         return None
 
-def detect_git_changes(git_path, compose_path):
-    """Detects if there are changes in the Git repository affecting the docker-compose file."""
+def execute_command(command):
+    """Executes a given command and returns its output and exit status."""
     try:
-        temp_compose_path = os.path.join(git_path, 'docker-compose.tmp.yml')
-        subprocess.run(['cp', compose_path, temp_compose_path], check=True)
-        subprocess.run(['git', 'pull'], cwd=git_path, capture_output=True, text=True)
-        cmp_result = subprocess.run(['cmp', compose_path, temp_compose_path], stdout=subprocess.PIPE)
-        os.remove(temp_compose_path)
-        if cmp_result.returncode != 0:
-            print("🔄 Changes detected.")
-            return True
-        else:
-            print(f"✅ No changes detected in the Docker Compose file at {git_path}.")
-            return False
-    except Exception as e:
-        print("🚫 Error during Git operations:", e)
-        return False
+        result = subprocess.run(command, shell=True, text=True, capture_output=True)
+        return result.stdout + result.stderr, result.returncode
+    except subprocess.CalledProcessError as e:
+        print("🚫 Error executing command:", e)
+        return e.output, False
 
 def execute_docker_compose_up(compose_path):
     """Executes 'docker compose up -d' and captures both stdout and stderr."""
@@ -90,8 +112,9 @@ def deployment_cycle():
                     for index, condition in enumerate(exception_conditions):
                         print(f"⚙️ Trying exception condition {index+1}/{len(exception_conditions)} for {repo_name}...")
                         if all_keywords_match(output, condition['search']['keywords']):
-                            output, success = execute_docker_compose_up(compose_path)
-                            if success and all_keywords_match(output, success_keywords):
+                            cmd_output, cmd_success = execute_command(condition['command'])
+                            print(f"Command Output: {cmd_output}")
+                            if cmd_success and all_keywords_match(cmd_output, success_keywords):
                                 print(f"✅ {datetime.now()} - Docker Compose up successful after exception for {repo_url}")
                                 break
                             else:
@@ -111,7 +134,9 @@ def deployment_cycle():
 
 
 def main():
-    interval_minutes = read_config().get('schedule', {}).get('interval_minutes', 5)
+    config = read_config()
+    set_git_safe_directories(config)
+    interval_minutes = config.get('schedule', {}).get('interval_minutes', 5)
     schedule.every(interval_minutes).minutes.do(deployment_cycle)
     while True:
         schedule.run_pending()
@@ -119,4 +144,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

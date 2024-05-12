@@ -8,13 +8,15 @@ schedule:
 
 # gitrepo_path: Specifies the paths to your local Git repositories and their Docker Compose files.
 gitrepo_path:
+# Relative path to the Git repository
+# Relative path to the Docker Compose file
   repo1:
-    path: "./autodeploy/taskrepo"  # Relative path to the Git repository
-    compose_path: "./autodeploy/taskrepo/docker-compose.yaml" # Relative path to the Docker Compose file
+    path: "./autodeploy/taskrepo"  
+    compose_path: "./autodeploy/taskrepo/docker-compose.yaml" 
 
   repo2:
-    path: "./autodeploy/reponamesecond"  # Relative path to another Git repository
-    compose_path: "./autodeploy/reponamesecond/docker-compose.yml"  # Relative path to another Docker Compose file
+    path: "./autodeploy/reponamesecond"
+    compose_path: "./autodeploy/reponamesecond/docker-compose.yml" 
 
 # keyword guide: word start with ! means not equalto | without ! means not Equalto
 # Success_condition: Lists keywords that, if not found in the output of docker-compose up, indicate a successful operation.

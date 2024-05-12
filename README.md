@@ -11,7 +11,8 @@ This script automates the deployment of Dockerized applications by monitoring up
 - **Secure**: Does not log sensitive information like Git URLs.
 
 ## Directory Structure
-```deployment-script/
+```AutomatComposeDeploy
+/
 │
 ├── autodeploy/                  # Central folder for all deployment-related activities
 │   ├── example_repo/            # Each cloned Git repository
@@ -30,10 +31,10 @@ This script automates the deployment of Dockerized applications by monitoring up
 ## Initial Setup
 
 1. **Clone the Deployment Script Repository**: Start by cloning this deployment script repository to your local machine.
-    ## NOTE: You can use gitcloner to clone multiple repositories.
     ```bash
-    git clone [URL-to-this-repository] deployment-script
-    cd deployment-script
+    git clone [URL-to-this-repository] AutomatComposeDeploy
+    cd AutomatComposeDeploy
+
     ```
 
 2. **Create the Autodeploy Folder**: Within the cloned repository, create an `autodeploy` folder. This will serve as the central point for all deployment-related activities.
@@ -43,11 +44,12 @@ This script automates the deployment of Dockerized applications by monitoring up
     ```
 
 3. **Clone Repositories**: Clone each of your Git repositories into the `autodeploy` folder. Ensure each repository contains a Docker Compose file configured as needed for deployment.
-
+    ### NOTE: You can use gitcloner to clone multiple repositries.
     ```bash
     cd autodeploy
     git clone [URL-to-your-repository] example_repo
     # Repeat for other repositories as needed
+    # Setup the .env as their respected repository
     ```
 
 4. **Configure Docker Compose**: In the Docker Compose file of each repository, specify the full path to the `autodeploy` directory in the volumes section. This ensures the script has the necessary access to manage Docker services.
@@ -58,10 +60,9 @@ This script automates the deployment of Dockerized applications by monitoring up
         volumes:
           - /full/path/to/deployment-script/autodeploy:/app
     ```
-## Configuration Guide
-
-### Config.yaml File
-Create and edit the `config.yaml` file located in the `deployment-script` folder. This file controls various parameters of the script:
+## Configuration Guide - Config.yaml File: 
+Create and edit the config.yaml file located in the deployment-script folder. which contains information about Git repository paths, success conditions, and exception conditions.
+This file controls various parameters of the script:
 
 #### Schedule
 Set the interval at which the script will check for updates in the repositories.
@@ -76,9 +77,17 @@ Define the paths to your local Git repositories and their respective Docker Comp
       path: "./autodeploy/example_repo"  # Relative path to the Git repository within autodeploy
       compose_path: "./autodeploy/example_repo/docker-compose.yml"  # Relative path to the Docker Compose file 
 ```
-#### Note (do not commit the autodeploy directory ):
+### Config - Conditions Logic
+- **Check for Changes**: For each Git repository, it checks if there are any changes in the Docker Compose file.
+- **Execute Docker Compose**: If changes are detected, it attempts to bring up the services defined in the Docker Compose file using docker-compose up .
+- **Success Condition**: If the docker-compose up command succeeds and specific keywords are not found in the output, it considers the operation successful and moves to the next repository.
+- **Exception Conditions**: If the docker-compose up command fails or specific keywords in Exception and it found in the output, it tries exception conditions command execution and retries docker-compose up and 
+  success condition checks for each exception condition until either a condition succeeds or all conditions are exhausted.
+
+
+#### Note :
 Ensure that all paths in gitrepo_path and compose_path are specified as relative paths, to maintain the script's flexibility and ease of configuration across different environments.
-The config.yaml file must be located in the deployment-script directory to be properly read by the script.
+The config.yaml file must be located in the deployment-script directory to be properly read by the script. if you found any error related to file not found please recheck  the directory structure.
 
 
 

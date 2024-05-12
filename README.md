@@ -54,7 +54,7 @@ This Tool automates the deployment of Dockerized applications by monitoring upda
     # Setup the .env for the necessary respected repository that used by docker-compose (Optional)
     ```
 
-4. **Configure Docker Compose**: In the Docker Compose file of each repository, specify the full path to the `autodeploy` directory in the volumes section to avoid conflicts. This ensures the script has the necessary access to manage Docker services.
+4. **Configure Docker Compose**: In the Docker Compose file specify the full path to the `autodeploy` directory of the **Host** . In which the cloned repository is there for autodeploy . It Mounted as volumes section to avoid conflicts.
 
     ```yaml
     services:
@@ -66,7 +66,7 @@ This Tool automates the deployment of Dockerized applications by monitoring upda
    
 6. **Modifiy the Dockerfile.autodeploy** (Optional): Arguments to define UID, GID, and Docker group GID SameAS -> Host user ids (use `id` command). To Avoid git conflicts.
    
-7. **Setup is Compleated** Now You can run the 'docker compose up -d' to run the AutomatComposeDeploy Service and check the logs (You Will see the script logs after schedule interval_minutes). First time you need to run the container manually because new git changes has already pulled.
+7. **Setup is Compleated** Now You can run the 'docker compose up -d' to run the AutomatComposeDeploy Service and check the logs (The Initial logs appear after schedule interval_minutes). First time you need to run your application containers manually because new git changes has already pulled when you cloned.
 
 
 ## Configuration Guide - Config.yaml File: 

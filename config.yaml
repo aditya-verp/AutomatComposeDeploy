@@ -2,9 +2,9 @@ Here's how you can document each parameter in your config.yaml to explain its pu
 
 # Configuration file for Automated Deployment Script
 
-# Schedule: Defines how frequently the script checks for updates in the repositories.
+# Schedule: Defines how frequently the script checks for updates in the repositories. interval_minutes defined as Minutes.
 schedule:
-  interval_minutes: 1  # Set to check every 1 minute
+  interval_minutes: 1  
 
 # gitrepo_path: Specifies the paths to your local Git repositories and their Docker Compose files.
 gitrepo_path:

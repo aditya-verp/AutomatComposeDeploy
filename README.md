@@ -48,9 +48,10 @@ This Tool automates the deployment of Dockerized applications by monitoring upda
     #### NOTE: You can use gitcloner to clone multiple repositries.
     ```bash
     cd autodeploy
-    git clone [URL-to-your-repository] example_repo
+    git clone [URL-to-your-repository] example_repo1
+    git clone [URL-to-your-repository] example_repo2
     # Repeat for other repositories as needed
-    # Setup the .env as their respected repository
+    # Setup the .env for the necessary respected repository that used by docker-compose (Optional)
     ```
 
 4. **Configure Docker Compose**: In the Docker Compose file of each repository, specify the full path to the `autodeploy` directory in the volumes section to avoid conflicts. This ensures the script has the necessary access to manage Docker services.
@@ -112,7 +113,7 @@ The Git Cloner script automates the cloning of Git repositories into a specified
 Ensure that all paths in gitrepo_path and compose_path are specified as relative paths, to maintain the script's flexibility and ease of configuration across different environments.
 The config.yaml file must be located in the deployment-script directory to be properly read by the script.
 - **doker login auth error (solution)**: While doing docker login in the container need to mount the docker socket for non-root user.
-   - Example: "docker run -v /run/user/1001/docker.sock:/var/run/docker.sock:ro -v /usr/bin/docker:/usr/bin/docker --rm -i public.ecr.aws/aws-cli/aws-cli ecr get-login-password --region eu-west-3 | docker login -u AWS --password-stdin 880947752174.dkr.ecr.eu-west-3.amazonaws.com"
+   - Example: `"docker run -v /run/user/1001/docker.sock:/var/run/docker.sock:ro -v /usr/bin/docker:/usr/bin/docker --rm -i public.ecr.aws/aws-cli/aws-cli ecr get-login-password --region eu-west-3 | docker login -u AWS --password-stdin 880947752174.dkr.ecr.eu-west-3.amazonaws.com"`
 - Always check the Logs and if you found any error related to file not found please recheck the directory structure which you have configured
 - **Example Logs** -
 ![image](https://github.com/aditya-verp/AutomatComposeDeploy/assets/124437522/2cf2c49d-d0d5-44ed-b6be-64d50fb49fbb)

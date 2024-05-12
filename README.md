@@ -63,7 +63,7 @@ This script automates the deployment of Dockerized applications by monitoring up
     ```
 5. **Configure config.yaml**: Create and edit the config.yaml file located in the deployment-script folder. which contains information about Git repository paths, success conditions, and exception conditions.
    
-6. **Modifiy the Dockerfile.autodeploy** (Optional): Arguments to define UID, GID, and Docker group GID TO -> Host user ids (use `id` command). To Avoid git conflicts.
+6. **Modifiy the Dockerfile.autodeploy** (Optional): Arguments to define UID, GID, and Docker group GID SameAS -> Host user ids (use `id` command). To Avoid git conflicts.
    
 7. **Setup is Compleated** Now You can run the 'docker compose up -d' to run the AutomatComposeDeploy Service and check the logs.
 

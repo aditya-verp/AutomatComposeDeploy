@@ -10,7 +10,7 @@ schedule:
 gitrepo_path:
   repo1:
     path: "./autodeploy/taskrepo"  # Relative path to the Git repository
-    compose_path: "./autodeploy/taskrepo/docker-compose.yml" # Relative path to the Docker Compose file
+    compose_path: "./autodeploy/taskrepo/docker-compose.yaml" # Relative path to the Docker Compose file
 
   repo2:
     path: "./autodeploy/reponamesecond"  # Relative path to another Git repository

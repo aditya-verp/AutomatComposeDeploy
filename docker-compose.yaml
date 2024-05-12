@@ -6,6 +6,7 @@ services:
       dockerfile: Dockerfile.autodeploy
     #privileged: true
     volumes:
+      #-/run/user/1001/docker.sock:/var/run/docker.sock:ro  # Use this for non-root user
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/water/tmp/AutomatComposeDeploy/autodeploy:/app/autodeploy  # Specify the full path to the `autodeploy` directory of Host.
     #ports:

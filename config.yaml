@@ -33,7 +33,7 @@ Success_condition:
 
 
 #exception_condition: Defines recovery actions if initial deployment fails, based on specific error keywords found it executes the command subjected the keyword and tries the 'docker compose up' and got to the success condition if it pass it stop otherwise it jump to the next keyword in the exception_condition until it get exhausted.
-#It mach the keyword in output of the docker compose up. You can you any keyword as per your requirement
+#It mach the keyword in output of the docker compose up. You can add more and any keyword as per your requirement
 exception_condition:
   - search:
       keywords:

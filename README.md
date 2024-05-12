@@ -1,7 +1,7 @@
 # AutomatComposeDeploy - CD Tool
 
 ## Overview
-This Tool automates the deployment of Dockerized applications by monitoring updates in Git repositories, pulling those updates, and managing Docker containers through Docker Compose. It is designed to run continuously, checking for updates on the docket compose file only in all the configured repositories.
+This Tool automates the deployment of Dockerized applications by monitoring updates in Git repositories, pulling those updates, and managing Docker containers through Docker Compose. It is designed to run continuously, checking for updates only on the docket compose file in all the configured repositories.
 ## Features
 - **Automated Pulls**: Automatically pulls the latest changes from the specified Git repositories.
 - **Docker Compose Integration**: Utilizes Docker Compose to manage container deployments.

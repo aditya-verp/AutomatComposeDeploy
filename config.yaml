@@ -9,8 +9,8 @@ schedule:
 # gitrepo_path: Specifies the paths to your local Git repositories and their Docker Compose files.
 gitrepo_path:
   repo1:
-    path: "./autodeploy/reponame"  # Relative path to the Git repository
-    compose_path: "./autodeploy/reponame/docker-compose.yml" # Relative path to the Docker Compose file
+    path: "./autodeploy/taskrepo"  # Relative path to the Git repository
+    compose_path: "./autodeploy/taskrepo/docker-compose.yml" # Relative path to the Docker Compose file
 
   repo2:
     path: "./autodeploy/reponamesecond"  # Relative path to another Git repository

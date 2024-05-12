@@ -4,12 +4,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.autodeploy
-    privileged: true
+    #privileged: true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/water/tmp/autodeploy/:/app/
-    ports:
-      - "80:80"
-    environment:
-      DOCKER_TLS_CERTDIR: ""
+      - /home/water/tmp/AutomatComposeDeploy/autodeploy:/app/autodeploy  # Specify the full path to the `autodeploy` directory of Host.
+    #ports:
+    #environment:
     restart: always

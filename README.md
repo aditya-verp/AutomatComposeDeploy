@@ -58,7 +58,7 @@ This script automates the deployment of Dockerized applications by monitoring up
     services:
       app:
         volumes:
-          - /full/path/to/AutomatComposeDeploy/autodeploy:/app
+          - /full/path/to/AutomatComposeDeploy/autodeploy:/app/autodeploy
     ```
 5. **Configure config.yaml**: Create and edit the config.yaml file located in the deployment-script folder. which contains information about Git repository paths, success conditions, and exception conditions.
 
@@ -87,6 +87,19 @@ schedule:
 - **Success Condition**: If the docker-compose up command succeeds and specific keywords are not found in the output, it considers the operation successful and moves to the next repository.
 - **Exception Conditions**: If the docker-compose up command fails or specific keywords in Exception and it found in the output, it tries exception conditions command execution and retries docker-compose up and 
   success condition checks for each exception condition until either a condition succeeds or all conditions are exhausted.
+
+## Using the Git Cloner Script:
+
+The Git Cloner script automates the cloning of Git repositories into a specified directory, handling both public and private repositories by optionally using authentication tokens. This is useful for setting up deployment environments or when managing multiple project repositories.
+
+### Steps to Use the Git Cloner:
+
+1. **Set the Authentication Token**: If you are cloning private repositories that require authentication, you need to provide a personal access token. Replace the `TOKEN=""` line in the script with your personal access token enclosed in quotes.
+
+2. **Configure Repository Details**: List each repository you want to clone in the repos array. Each element should include the repository URL, the branch you want to clone, and a boolean flag indicating whether the token should be used (true for private repositories, false for public repositories).
+
+3. **Set the Target Directory**: Define the directory where the repositories will be cloned into with TARGET_DIR. This path can be adjusted to any directory where you wish to organize the cloned repositories.
+
 
 
 

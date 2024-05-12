@@ -66,7 +66,7 @@ This Tool automates the deployment of Dockerized applications by monitoring upda
    
 6. **Modifiy the Dockerfile.autodeploy** (Optional): Arguments to define UID, GID, and Docker group GID SameAS -> Host user ids (use `id` command). To Avoid git conflicts.
    
-7. **Setup is Compleated** Now You can run the 'docker compose up -d' to run the AutomatComposeDeploy Service and check the logs (The Initial logs appear after schedule interval_minutes). First time you need to run your application containers manually because new git changes has already pulled when you cloned.
+7. `**Setup is Compleated**` Now You can run the 'docker compose up -d' to run the AutomatComposeDeploy Service and check the logs (The Initial logs appear after schedule interval_minutes). First time you need to run your application containers manually because new git changes has already pulled when you cloned.
 
 
 ## Configuration Guide - Config.yaml File: 

@@ -93,7 +93,11 @@ schedule:
 
 #### Note :
 Ensure that all paths in gitrepo_path and compose_path are specified as relative paths, to maintain the script's flexibility and ease of configuration across different environments.
-The config.yaml file must be located in the deployment-script directory to be properly read by the script. if you found any error related to file not found please recheck  the directory structure.
+The config.yaml file must be located in the deployment-script directory to be properly read by the script.
+    # Always check the Logs and if you found any error related to file not found please recheck the directory structure which you have configured
+Example Logs - (troubleshooting: In this Logs script can't find the docker compose file , now you need to correct the path in the config.yaml)
+![image](https://github.com/aditya-verp/AutomatComposeDeploy/assets/124437522/34e98090-06e6-4907-9f03-0ed18dd0061b)
+
 
 
 

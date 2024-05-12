@@ -1,36 +1,48 @@
-schedule:
-  interval_minutes: 1
+Here's how you can document each parameter in your config.yaml to explain its purpose and use case briefly:
 
+# Configuration file for Automated Deployment Script
+
+# Schedule: Defines how frequently the script checks for updates in the repositories.
+schedule:
+  interval_minutes: 1  # Set to check every 1 minute
+
+# gitrepo_path: Specifies the paths to your local Git repositories and their Docker Compose files.
 gitrepo_path:
   repo1:
-    path: "./test"
-    compose_path: "./test/docker-compose.yml"
+    path: "./autodeploy/reponame"  # Relative path to the Git repository
+    compose_path: "./autodeploy/reponame/docker-compose.yml" # Relative path to the Docker Compose file
 
   repo2:
-    path: "./taskrepo"
-    compose_path: "./taskrepo/docker-compose.yaml"
+    path: "./autodeploy/reponamesecond"  # Relative path to another Git repository
+    compose_path: "./autodeploy/reponamesecond/docker-compose.yml"  # Relative path to another Docker Compose file
 
+# keyword guide: word start with ! means not equalto | without ! means not Equalto
+# Success_condition: Lists keywords that, if not found in the output of docker-compose up, indicate a successful operation.
 Success_condition:
   keywords:
-    - "!error"
-    - "!failed"
-    - "!fail"
-    - "!exception"
-    - "!unexpected"
-    - "!abort"
-    - "!fatal"
-    - "!container_error"
-    - "!service_failed"
-    - "!network_error"
-    
+    - "!error"           # Indicates absence of errors
+    - "!failed"          # Indicates operation did not fail
+    - "!fail"            # Short form for failure check
+    - "!exception"       # No exceptions should be present
+    - "!unexpected"      # No unexpected errors should occur
+    - "!abort"           # Ensures process was not aborted
+    - "!fatal"           # Checks for absence of fatal errors
+    - "!container_error" # No container specific errors
+    - "!service_failed"  # No services should have failed
+    - "!network_error"   # No network errors should occur
 
+
+#exception_condition: Defines recovery actions if initial deployment fails, based on specific error keywords found it executes the command subjected the keyword and tries the 'docker compose up' and got to the success condition if it pass it stop otherwise it jump to the next keyword in the exception_condition until it get exhausted.
+#It mach the keyword in output of the docker compose up. You can you any keyword as per your requirement
 exception_condition:
   - search:
       keywords:
-        - "docker login"
-        - "denied"
+        - "docker login"  # Triggers if Docker login issues are detected
+        - "denied"        # Triggers if permission denied issues are detected
     command: "docker run --rm -i public.ecr.aws/aws-cli/aws-cli ecr get-login-password --region eu-west-3 | docker login -u AWS --password-stdin 880947752174.dkr.ecr.eu-west-3.amazonaws.com"
+    # This command logs into AWS ECR using credentials obtained from the AWS CLI
   - search:
       keywords:
-        - "space"
+        - "space"         # Triggers if space-related issues are detected (like disk space)
     command: "docker system prune -af"
+    # This command prunes all unused Docker objects to free up space

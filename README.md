@@ -65,7 +65,8 @@ This script automates the deployment of Dockerized applications by monitoring up
    
 6. **Modifiy the Dockerfile.autodeploy** (Optional): Arguments to define UID, GID, and Docker group GID SameAS -> Host user ids (use `id` command). To Avoid git conflicts.
    
-7. **Setup is Compleated** Now You can run the 'docker compose up -d' to run the AutomatComposeDeploy Service and check the logs.
+7. **Setup is Compleated** Now You can run the 'docker compose up -d' to run the AutomatComposeDeploy Service and check the logs (You Will see the script logs after 
+ schedule interval_minutes).
 
 
 ## Configuration Guide - Config.yaml File: 

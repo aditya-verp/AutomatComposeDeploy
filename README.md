@@ -69,7 +69,7 @@ This script automates the deployment of Dockerized applications by monitoring up
 This file controls various parameters of the script:
 
 - **Schedule**: Set the interval at which the script will check for updates in the repositories.
-- **gitrepo_path**: Define the paths to your local Git repositories and their respective Docker Compose files. Use the format ./autodeploy/git-repo-name for the repository paths to ensure proper directory referencing.
+- **gitrepo_path**: Define the paths to your local Git repositories and their respective Docker Compose files. Use the format ./autodeploy/git-repo-name for the repository paths to ensure proper directory referencing. This is Must condition to script to fetch the repositories
 ```yaml
 schedule:
   interval_minutes: 5  # Example: checks every 5 minutes

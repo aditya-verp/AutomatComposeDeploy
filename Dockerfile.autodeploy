@@ -1,12 +1,10 @@
-# Use the latest Python image based on Debian Buster as the base
 FROM python:3.9-buster
-
 # Arguments to define UID, GID, and Docker group GID
 ARG UID=1000
 ARG GID=1000
 ARG DOCKER_GID=999
 
-# Install necessary packages, including Docker and Supervisor
+# Install necessary packages
 RUN apt-get update -y && apt-get install -y \
     ca-certificates \
     curl \
@@ -28,10 +26,7 @@ RUN if getent group docker; then echo "Group 'docker' already exists"; else grou
     groupadd -g ${GID} appgroup && \
     useradd -m -u ${UID} -g appgroup -G docker appuser
 
-# Set the working directory in the container
 WORKDIR /app
-
-
 # Change ownership of the working directory and other necessary directories to the non-root user
 RUN mkdir -p /var/run/supervisor && chown -R appuser:appgroup /var/run/supervisor
 RUN mkdir -p /var/log/supervisor && chown -R appuser:appgroup /var/log/supervisor
@@ -43,14 +38,8 @@ COPY --chown=appuser:appgroup deployment_script.py /app/
 # Copy supervisord configuration file into the container
 COPY --chown=appuser:appgroup supervisord.conf /etc/supervisor/conf.d/
 
-# Switch to the non-root user
 USER appuser
-
-# Install Python dependencies
 RUN pip install --no-cache-dir schedule PyYAML
-
-# Expose any necessary ports
-EXPOSE 80
 
 # Run supervisord
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

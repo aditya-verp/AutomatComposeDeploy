@@ -1,7 +1,7 @@
-# Automated Deployment Script README
+# AutomatComposeDeploy - CD Tool
 
 ## Overview
-This script automates the deployment of Dockerized applications by monitoring updates in Git repositories, pulling those updates, and managing Docker containers through Docker Compose. It is designed to run continuously, checking for updates at configurable intervals.
+This Tool automates the deployment of Dockerized applications by monitoring updates in Git repositories, pulling those updates, and managing Docker containers through Docker Compose. It is designed to run continuously, checking for updates on the docket compose file only in all the configured repositories.
 ## Features
 - **Automated Pulls**: Automatically pulls the latest changes from the specified Git repositories.
 - **Docker Compose Integration**: Utilizes Docker Compose to manage container deployments.
@@ -45,7 +45,7 @@ This script automates the deployment of Dockerized applications by monitoring up
     ```
 
 3. **Clone Repositories**: Clone each of your Git repositories into the `autodeploy` folder. Ensure each repository contains a Docker Compose file configured as needed for deployment.
-    ### NOTE: You can use gitcloner to clone multiple repositries.
+    #### NOTE: You can use gitcloner to clone multiple repositries.
     ```bash
     cd autodeploy
     git clone [URL-to-your-repository] example_repo
@@ -92,7 +92,7 @@ schedule:
 - **Exception Conditions**: If the docker-compose up command fails or specific keywords in Exception and it found in the output, it tries exception conditions command execution and retries docker-compose up and 
   success condition checks for each exception condition until either a condition succeeds or all conditions are exhausted.
 
-## Using the Git Cloner Script:
+## Git Cloner Script Guide:
 
 The Git Cloner script automates the cloning of Git repositories into a specified directory, handling both public and private repositories by optionally using authentication tokens. This is useful for setting up deployment environments or when managing multiple project repositories.
 
@@ -111,8 +111,8 @@ The Git Cloner script automates the cloning of Git repositories into a specified
 #### Note :
 Ensure that all paths in gitrepo_path and compose_path are specified as relative paths, to maintain the script's flexibility and ease of configuration across different environments.
 The config.yaml file must be located in the deployment-script directory to be properly read by the script.
-- **doker login auth error solution**: While doing docker login in the container need to mount the docker socket for non-root user.
-   Example: "docker run -v /run/user/1001/docker.sock:/var/run/docker.sock:ro -v /usr/bin/docker:/usr/bin/docker --rm -i public.ecr.aws/aws-cli/aws-cli ecr get-login-password --region eu-west-3 | docker login -u AWS --password-stdin 880947752174.dkr.ecr.eu-west-3.amazonaws.com"
+- **doker login auth error (solution)**: While doing docker login in the container need to mount the docker socket for non-root user.
+   - Example: "docker run -v /run/user/1001/docker.sock:/var/run/docker.sock:ro -v /usr/bin/docker:/usr/bin/docker --rm -i public.ecr.aws/aws-cli/aws-cli ecr get-login-password --region eu-west-3 | docker login -u AWS --password-stdin 880947752174.dkr.ecr.eu-west-3.amazonaws.com"
 - Always check the Logs and if you found any error related to file not found please recheck the directory structure which you have configured
 - **Example Logs** -
 ![image](https://github.com/aditya-verp/AutomatComposeDeploy/assets/124437522/2cf2c49d-d0d5-44ed-b6be-64d50fb49fbb)

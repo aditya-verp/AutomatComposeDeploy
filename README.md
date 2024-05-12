@@ -24,8 +24,9 @@ This script automates the deployment of Dockerized applications by monitoring up
 │   │   └── ...
 │   │
 ├── config.yaml                  # Configuration file for the deployment script
+├── docker-compose.yaml                  
 │
-└── gitcloner.sh         # Main Python script for deployment
+└── gitcloner.sh                 # Main Python script for deployment
 └── deployment_script.py
 ```
 ## Initial Setup

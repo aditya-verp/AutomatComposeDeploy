@@ -114,8 +114,9 @@ The config.yaml file must be located in the deployment-script directory to be pr
 - **doker login auth error solution**: While doing docker login in the container need to mount the docker socket for non-root user.
    Example: "docker run -v /run/user/1001/docker.sock:/var/run/docker.sock:ro -v /usr/bin/docker:/usr/bin/docker --rm -i public.ecr.aws/aws-cli/aws-cli ecr get-login-password --region eu-west-3 | docker login -u AWS --password-stdin 880947752174.dkr.ecr.eu-west-3.amazonaws.com"
 - Always check the Logs and if you found any error related to file not found please recheck the directory structure which you have configured
-- **Example Logs** - (troubleshooting: In this Logs script can't find the docker compose file , now you need to correct the path in the config.yaml)
-![image](https://github.com/aditya-verp/AutomatComposeDeploy/assets/124437522/88bece98-c5f5-4095-8fe3-44a25a525a56)
+- **Example Logs** -
+![image](https://github.com/aditya-verp/AutomatComposeDeploy/assets/124437522/2cf2c49d-d0d5-44ed-b6be-64d50fb49fbb)
+
 
 
 

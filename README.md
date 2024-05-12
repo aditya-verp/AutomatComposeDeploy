@@ -44,7 +44,7 @@ This Tool automates the deployment of Dockerized applications by monitoring upda
     mkdir autodeploy
     ```
 
-3. **Clone Repositories**: Clone each of your Git repositories into the `autodeploy` folder. Ensure each repository contains a Docker Compose file configured as needed for deployment.
+3. **Clone Repositories**: Clone each of your Applicatio Git repositories into the `autodeploy` folder. Ensure each repository contains a Docker Compose file configured as needed for deployment.
     #### NOTE: You can use gitcloner to clone multiple repositries.
     ```bash
     cd autodeploy
@@ -54,7 +54,7 @@ This Tool automates the deployment of Dockerized applications by monitoring upda
     # Setup the .env for the necessary respected repository that used by docker-compose (Optional)
     ```
 
-4. **Configure Docker Compose**: In the Docker Compose file specify the full path to the `autodeploy` directory of the **Host** . In which the cloned repository is there for autodeploy . It Mounted as volumes section to avoid conflicts.
+4. **Configure Docker Compose**: In the Docker Compose file specify the full path to the `autodeploy` directory of the **Host** . In which the cloned repository is there for autodeploy . It Must needed to Mounted as volumes.
 
     ```yaml
     services:

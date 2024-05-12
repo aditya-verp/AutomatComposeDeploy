@@ -100,6 +100,7 @@ The Git Cloner script automates the cloning of Git repositories into a specified
 1. **Set the Authentication Token**: If you are cloning private repositories that require authentication, you need to provide a personal access token. Replace the `TOKEN=""` line in the script with your personal access token enclosed in quotes.
 
 2. **Configure Repository Details**: List each repository you want to clone in the repos array. Each element should include the repository URL, the branch you want to clone, and a boolean flag indicating whether the token should be used (true for private repositories, false for public repositories).
+    `"https://github.com/aditya-verp/example.git main true"`  
 
 3. **Set the Target Directory**: Define the directory where the repositories will be cloned into with TARGET_DIR. This path can be adjusted to any directory where you wish to organize the cloned repositories.
 

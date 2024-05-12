@@ -38,7 +38,7 @@ This Tool automates the deployment of Dockerized applications by monitoring upda
 
     ```
 
-2. **Create the Autodeploy Folder**: Within the cloned repository, create an `autodeploy` folder. This will serve as the central point for all deployment-related activities.
+2. **Create the Autodeploy Folder**: Within the cloned repository, create an `autodeploy` folder. This will serve as the central point for all your Application git repositories for Auto deployment-related activities.
 
     ```bash
     mkdir autodeploy

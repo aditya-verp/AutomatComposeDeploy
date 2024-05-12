@@ -67,7 +67,7 @@ def execute_command(command):
     """Executes a given command and returns its output and exit status."""
     try:
         result = subprocess.run(command, shell=True, text=True, capture_output=True)
-        return result.stdout + result.stderr, result.returncode
+        return result.stdout + result.stderr, result.returncode == 0
     except subprocess.CalledProcessError as e:
         print("🚫 Error executing command:", e)
         return e.output, False
@@ -114,7 +114,11 @@ def deployment_cycle():
                         if all_keywords_match(output, condition['search']['keywords']):
                             cmd_output, cmd_success = execute_command(condition['command'])
                             print(f"Command Output: {cmd_output}")
-                            if cmd_success and all_keywords_match(cmd_output, success_keywords):
+                            # Retry Docker Compose up after running the command in the exception condition
+                            print("Retrying docker-compose up...")
+                            output, success = execute_docker_compose_up(compose_path)
+                            print(f"Retry Output: {output}")
+                            if success and all_keywords_match(output, success_keywords):
                                 print(f"✅ {datetime.now()} - Docker Compose up successful after exception for {repo_url}")
                                 break
                             else:

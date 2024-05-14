@@ -1,7 +1,5 @@
 Here's how you can document each parameter in your config.yaml to explain its purpose and use case briefly:
 
-# Configuration file for Automated Deployment Script
-
 # Schedule: Defines how frequently the script checks for updates in the repositories. interval_minutes defined as Minutes.
 schedule:
   interval_minutes: 1  
@@ -10,6 +8,7 @@ schedule:
 gitrepo_path:
 # Relative path to the Git repository
 # Relative path to the Docker Compose file
+
   repo1:
     path: "./autodeploy/taskrepo"  
     compose_path: "./autodeploy/taskrepo/docker-compose.yaml" 
@@ -17,6 +16,7 @@ gitrepo_path:
   repo2:
     path: "./autodeploy/reponamesecond"
     compose_path: "./autodeploy/reponamesecond/docker-compose.yml" 
+
 
 # keyword guide: word start with ! means not equalto | without ! means not Equalto
 # Success_condition: Lists keywords that, if not found in the output of docker-compose up, indicate a successful operation.
@@ -35,7 +35,7 @@ Success_condition:
 
 
 #exception_condition: Defines recovery actions if initial deployment fails, based on specific error keywords found it executes the command subjected the keyword and tries the 'docker compose up' and got to the success condition if it pass it stop otherwise it jump to the next keyword in the exception_condition until it get exhausted.
-#It mach the keyword in output of the docker compose up. You can add more and any keyword as per your requirement
+#It Matches the keyword in output of the docker compose up. You can add more and any keyword as per your requirement
 ## NOTE: for non-root user need to mount the docker socket example-> docker run -v /run/user/1001/docker.sock:/var/run/docker.sock:ro -v /usr/bin/docker:/usr/bin/docker --rm -i public.ecr.aws/aws-cli/aws-cli ecr get-login-password --region eu-west-3 | docker login -u AWS --password-stdin 880947752174.dkr.ecr.eu-west-3.amazonaws.com    
 exception_condition:
   - search:
@@ -48,4 +48,4 @@ exception_condition:
       keywords:
         - "space"
     command: "docker system prune -af"
-    # This command prunes all unused Docker objects to free up space
+ 

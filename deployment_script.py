@@ -86,8 +86,28 @@ def execute_docker_compose_up(compose_path):
         return e.stderr, False
 
 def all_keywords_match(output, keywords):
-    """Check if all keywords match the output as whole words."""
-    return all(re.search(r'\b{}\b'.format(re.escape(keyword.strip('!'))), output) for keyword in keywords if not keyword.startswith('!'))
+    """Check if all keywords match the output as whole words, handling negations and OR conditions within keywords.
+    Each keyword can start with '!' to indicate that its absence is required.
+    Keywords can contain multiple sub-keywords separated by '|', indicating an OR condition.
+    """
+    for keyword in keywords:
+        negated = keyword.startswith('!')
+        if negated:
+            keyword = keyword[1:]  # Remove the '!' for processing
+
+        # Split the keyword by '|' to support OR conditions
+        sub_keywords = keyword.split('|')
+
+        # Check the presence or absence of sub_keywords based on negation
+        if negated:
+            # For negated keywords, ensure none of the sub_keywords are in the output as whole words
+            if any(re.search(r'\b{}\b'.format(re.escape(sub_keyword)), output) for sub_keyword in sub_keywords):
+                return False
+        else:
+            # For normal keywords, check if any of the sub_keywords are in the output as whole words
+            if not any(re.search(r'\b{}\b'.format(re.escape(sub_keyword)), output) for sub_keyword in sub_keywords):
+                return False
+    return True
 
 def deployment_cycle():
     config = read_config()
